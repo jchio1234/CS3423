@@ -1,0 +1,4 @@
+My name is Rafael Rodriguez
+I am running this script from /home/mat574/courses/cs3423/assignments
+My username is mat574
+I am logged in to fox04
