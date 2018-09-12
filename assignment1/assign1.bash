@@ -8,7 +8,7 @@ while [ $go ]; do
     echo "D - delete an existing item"
     if ! read ans; then
         # got EOF
-        Break
+        break
     fi
     case "$ans" in
         [Cc]) echo "time to create a new item!"
