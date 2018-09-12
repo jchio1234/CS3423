@@ -1,22 +1,24 @@
 #!/bin/bash
 go=0
 while [ $go ]; do
-    echo "Enter your choice or CTRL-D"
-    echo "A - I want to get an A"
-    echo "B - I want to get a B"
-    echo "F - I give up"
+    echo "Enter one of the following actions or press CTRL-D to exit."
+    echo "C - create a new item"
+    echo "R - read an existing item"
+    echo "U - update an existing item"
+    echo "D - delete an existing item"
     if ! read ans; then
-        #Reached EOF
+        # got EOF
         Break
     fi
     case "$ans" in
-        A) echo "you got an A"
-            break
+        [Cc]) echo "time to create a new item!"
             ;;
-        B) echo "you can do better than a B"
+        [Rr]) echo "time to read an existing item!"
             ;;
-        F) echo "keep trying"
+        [Uu]) echo "time to update an existing item!"
             ;;
-        *) echo "we think you can type better than that"
+        [Dd]) echo "time to delete an existing item!"
+            ;;
+        *) echo "Please enter a valid command"
     esac
 done
