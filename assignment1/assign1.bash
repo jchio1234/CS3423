@@ -1,23 +1,48 @@
 #!/bin/bash
+# Check for directory or create
+if [ -d "./data" ]; then
+    echo "Directory /data exists!"
+else
+    echo "Directory /data does not exist!"
+fi
+
+# Create the menu for user input
 go=0
 while [ $go ]; do
-    echo "Enter one of the following actions or press CTRL-D to exit."
+    echo "Enter one of the follow actions or press CTRL-D to exit."
     echo "C - create a new item"
     echo "R - read an existing item"
     echo "U - update an existing item"
     echo "D - delete an existing item"
-    if ! read ans; then
-        # got EOF
+    if ! read input; then
+        # Reached EOF
         break
     fi
-    case "$ans" in
-        [Cc]) echo "time to create a new item!"
+    case "$input" in
+        [Cc])
+            echo "Time to create a new item!"
+            read iNum
+            read sName
+            read iName
+            read cQuan
+            read mQuan
+            read desc
+            echo "Num: $iNum"
+            echo "Simple Name: $sName"
+            echo "Item Name: $iName"
+            echo "Cur Quan: $cQuan"
+            echo "Max Quan: $mQuan"
+            echo "Desc: $desc"
+            bash create.bash $iNum $sName $iName $cQuan $mQuan $desc
             ;;
-        [Rr]) echo "time to read an existing item!"
+        [Rr])
+            echo "Time to read an existing item!"
             ;;
-        [Uu]) echo "time to update an existing item!"
+        [Uu])
+            echo "Time to update an existing item!"
             ;;
-        [Dd]) echo "time to delete an existing item!"
+        [Dd])
+            echo "Time to delete an existing item!"
             ;;
         *) echo "Please enter a valid command"
     esac
