@@ -2,12 +2,12 @@
 read -p "Enter an item number: " iNum
 
 #Check if a file exists
-fileCount=$(find ./data -name $iNum.item | wc -l)
-if [[ fileCount -gt 0 ]]; then
+cd data
+if [[ -e $iNum.item ]]; then
     fileName=$iNum.item
     for (( i=1;; i++)); do
         read "line$i" || break;
-    done < ./data/$fileName
+    done < $fileName
     
     read sName iName <<< $line1
     
@@ -21,3 +21,4 @@ if [[ fileCount -gt 0 ]]; then
 else
     echo "ERROR: item not found"
 fi
+cd ..

@@ -6,21 +6,17 @@ read cQuan
 read mQuan
 read desc
 
+cd data
 #Check if a file already exists
-fileCount=$(find ./data -name $iNum.item | wc -l)
-if [[ fileCount -gt 0 ]]; then
+if [[ -e $iNum.item  ]]; then
     echo "ERROR: item already exists"
 else
-    cd data
-    
     cat > $iNum.item << EOF
 ${sName} ${iName}
 ${cQuan} ${mQuan}
 ${desc}
 EOF
-    
-    logCount=$(find . -name queries.log | wc -l)
-    if [[ logCount -gt 0 ]]; then
+    if [[ -e queries.log ]]; then
         cat >> queries.log << EOF
 CREATED: ${sName} - $(date)
 EOF
@@ -29,5 +25,5 @@ EOF
 CREATED: ${sName} - $(date)
 EOF
     fi
-    cd ..
 fi
+cd ..

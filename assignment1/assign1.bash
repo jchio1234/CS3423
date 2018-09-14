@@ -1,7 +1,6 @@
 #!/bin/bash
 #Check for data directory to create
-dirCount=$(find . -name data | wc -l)
-if [[ dirCount -eq 0 ]]; then
+if [ ! -d data ]; then
     mkdir data
 fi
 
