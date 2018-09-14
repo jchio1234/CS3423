@@ -8,12 +8,11 @@ if [[ fileCount -gt 0 ]]; then
     for (( i=1;; i++)); do
         read "line$i" || break;
     done < ./data/$fileName
-    while read $line1; do
-        read sName iName
-    done
-    while read $line2; do
-        read cQuan mQuan
-    done
+    
+    read sName iName <<< $line1
+    
+    read cQuan mQuan <<< $line2
+    
     echo "Item name: $iName"
     echo "Simple name: $sName"
     echo "Item Number: $iNum"
