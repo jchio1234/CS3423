@@ -1,4 +1,4 @@
-#1/bin/bash
+#!/bin/bash
 read -p "Enter an item number: " iNum
 
 #Keep prompting for iNum if it is empty
@@ -41,7 +41,7 @@ if [[ -e $iNum.item ]]; then
         read "line$i" || break;
     done < $fileName
 
-    #Iterate through each line and grab the values
+    #Store the contents of the line into variables
     read osName oiName <<< $line1
     read ocQuan omQuan <<< $line2
 
@@ -73,7 +73,7 @@ ${cQuan} ${mQuan}
 ${desc}
 EOF
 
-    #Update the log
+    #Check if log file exists to either create or append
     if [[ -e queries.log ]]; then
         cat >> queries.log << EOF
 UPDATED: ${sName} - $(date)
@@ -84,6 +84,6 @@ UPDATED: ${sName} - $(date)
 EOF
     fi
 else
-    echo "ERROR: item not found";
+    echo "ERROR: item not found"
 fi
 cd ..

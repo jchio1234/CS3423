@@ -1,5 +1,5 @@
 #!/bin/bash
-#Check for data directory to create
+#Check if data directory exists or create it
 if [ ! -d data ]; then
     mkdir data
 fi
