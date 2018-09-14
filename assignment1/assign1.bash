@@ -21,19 +21,7 @@ while [ $go ]; do
     case "$input" in
         [Cc])
             echo "Time to create a new item!"
-            read iNum
-            read sName
-            read iName
-            read cQuan
-            read mQuan
-            read desc
-            echo "Num: $iNum"
-            echo "Simple Name: $sName"
-            echo "Item Name: $iName"
-            echo "Cur Quan: $cQuan"
-            echo "Max Quan: $mQuan"
-            echo "Desc: $desc"
-            bash create.bash $iNum $sName $iName $cQuan $mQuan $desc
+            bash create.bash
             ;;
         [Rr])
             echo "Time to read an existing item!"

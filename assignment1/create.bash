@@ -1,17 +1,33 @@
 #!/bin/bash
-iNum=$1
-sName=$2
-iName=$3
-cQuan=$4
-mQuan=$5
-des=$6
+read iNum
+read sName
+read iName
+read cQuan
+read mQuan
+read desc
 
-cd ./data
-
-cat > $iNum.item << 'EOF'
-"$sName" "$iName"
-"$cQuan" "$mQuan"
-"$des"
+#Check if a file already exists
+fileCount=$(find ./data -name $iNum.item | wc -l)
+if [[ fileCount -gt 0 ]]; then
+    echo "ERROR: item already exists"
+else
+    cd data
+    
+    cat > $iNum.item << EOF
+${sName} ${iName}
+${cQuan} ${mQuan}
+${desc}
 EOF
-
-cd ..
+    
+    logCount=$(find . -name queries.log | wc -l)
+    if [[ logCount -gt 0 ]]; then
+        cat >> queries.log << EOF
+CREATED: ${sName} - $(date)
+EOF
+    else
+        cat > queries.log << EOF
+CREATED: ${sName} - $(date)
+EOF
+    fi
+    cd ..
+fi
