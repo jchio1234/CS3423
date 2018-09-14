@@ -1,9 +1,8 @@
 #!/bin/bash
-# Check for directory or create
-if [ -d "./data" ]; then
-    echo "Directory /data exists!"
-else
-    echo "Directory /data does not exist!"
+#Check for data directory to create
+dirCount=$(find . -name data | wc -l)
+if [[ dirCount -eq 0 ]]; then
+    mkdir data
 fi
 
 # Create the menu for user input
@@ -20,18 +19,17 @@ while [ $go ]; do
     fi
     case "$input" in
         [Cc])
-            echo "Time to create a new item!"
             bash create.bash
             ;;
         [Rr])
-            echo "Time to read an existing item!"
+            bash read.bash
             ;;
         [Uu])
-            echo "Time to update an existing item!"
+            bash update.bash
             ;;
         [Dd])
-            echo "Time to delete an existing item!"
+            bash delete.bash
             ;;
-        *) echo "Please enter a valid command"
+        *) echo "ERROR: invalid option"
     esac
 done
