@@ -6,5 +6,5 @@
 sed -E -f trailingwhitespace.sed ${1} > debug.c
 
 #No more than one space between tokens
-sed -E -f spacebetweentokens.sed ${1} > debug.c
+sed -E -f spacebetweentokens.sed debug.c > debug2.c
 
