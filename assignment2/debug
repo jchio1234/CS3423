@@ -8,13 +8,13 @@ int main() {
 
     printf("Enter a number: ");
 
-    scanf("%d", &numberIn);
+    scanf("%d", &numberIn);  
 
     if ( numberIn > 10 ) {
     //    add  two
-        return numberIn +  2;
+        return numberI + ;
     } else   if    (numberIn<5){
-    //    subtract two
+    //    subtract two   
         return  numberIn - 2;
 
     return  numberIn*2;
