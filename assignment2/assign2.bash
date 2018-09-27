@@ -9,4 +9,4 @@ sed -E -f trailingwhitespace.sed ${1} > debug.c
 sed -E -f spacebetweentokens.sed debug.c > debug2.c
 
 #Remove extra whitespace around binary operators
-
+sed -E -f operatorwhitespace.sed debug2.c > debug3.c
