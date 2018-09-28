@@ -5,8 +5,11 @@
 #Remove trailing whitespace after a line
 sed -E -f trailingwhitespace.sed ${1} > debug.c
 
-#No more than one space between tokens
-sed -E -f spacebetweentokens.sed debug.c > debug2.c
+#Remove extra whitespace around binary operators
+sed -E -f spacebetweenoperators.sed debug.c > debug2.c
 
 #Remove extra whitespace around binary operators
-sed -E -f operatorwhitespace.sed debug2.c > debug3.c
+sed -E -f spacebetweentokens.sed debug2.c > debug3.c
+
+#Remove extra whitespace inside of parentheses
+sed -E -f spaceinconditions.sed debug3.c > debug4.c
