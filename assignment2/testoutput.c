@@ -10,12 +10,12 @@ int main() {
 
     scanf("%d", &numberIn);
 
-    if (numberIn > 1) {
-    //    add two
+    if (numberIn > 10) {
+    //    add  two
         return numberIn + 2;
-    } else if (numberIn < 5){
+    } else   if (numberIn < 5){
     //    subtract two
-        return numberIn - 2;
+        return  numberIn - 2;
 
-    return numberIn * 2;
+    return  numberIn * 2;
 }
