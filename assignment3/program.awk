@@ -12,6 +12,13 @@ $1 ~ /[a-z]{3}[0-9]{3}/ {
         gsub(/[()]/, "", $10);
         time[$1] = $10;
     }
+    else
+    {
+        total = time[$1];
+        split(total, totalSplit, ":", seps);
+        totalSeconds = (totalSplit[0] + 0) * 3600 + (totalSplit[1] + 0) * 60;
+        time[$1] = totalSeconds;
+    }
 }
 END {
     for (key in count)

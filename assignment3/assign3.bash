@@ -1,2 +1,2 @@
-#Take in the last.in file as stdin and pass it to the awk script
+#!/bin/bash
 gawk -f program.awk ${1}
