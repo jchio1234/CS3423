@@ -8,7 +8,10 @@ $1 ~ /[a-z]{3}[0-9]{3}/ {
         host[$1] = $3
 
     if ($1 in time == 0)
-        time[$1] = $7;
+    {
+        gsub(/[()]/, "", $10);
+        time[$1] = $10;
+    }
 }
 END {
     for (key in count)
