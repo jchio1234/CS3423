@@ -7,19 +7,15 @@ $1 ~ /[a-z]{3}[0-9]{3}/ {
     if ($1 in host == 0)
         host[$1] = $3;
 
-    if ($1 in test == 0)
-        test[$1] = "test";
-
     if ($1 in time == 0)
     {
         if($NF == "in")
         {
             #User is still logged in
-            split(date,d);
+            split(cdate,d);
             d_input = d[4];
             split(d_input,t,":");
             d_seconds = 3600*t[1] + 60*t[2];
-            test[$1] = cdate;
             i_time = $7;
             split(i_time,iarr,":");
             i_seconds = 3600*iarr[1] + 60*iarr[2];
@@ -50,6 +46,8 @@ $1 ~ /[a-z]{3}[0-9]{3}/ {
         new_h = int(new_total/3600);
         new_total = new_total - (new_h * 3600);
         new_m = int(new_total/60);
+        if(new_h <= 9)
+            new_h = "0"new_h;
         time[$1] = new_h":"new_m;
     }
 }
@@ -60,6 +58,5 @@ END {
         printf("        Last host: %s\n", host[key]);
         printf("        Total Time: %s\n", time[key]);
         printf("        Total Sessions: %s\n", count[key]);
-        printf("        Test: %s\n", test[key]);
     }
 }
