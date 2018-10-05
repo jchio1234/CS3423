@@ -15,15 +15,15 @@ $1 ~ /[a-z]{3}[0-9]{3}/ {
     else
     {
         #Check if the last field is an "in"
-        if ($NF ~ /^in$/)
+        if ($10 ~ /in/)
         {
             split(date,d);
             d_input = d[4];
             split(d_input,t,":")
             d_seconds = 3600*t[1] + 60*t[2];
             i_time = $7;
-            split(i_time,i,":");
-            i_seconds = 3600*i[1] + 60*i[2];
+            split(i_time,iarr,":");
+            i_seconds = 3600*iarr[1] + 60*iarr[2];
             logged_in_seconds = d_seconds - i_seconds;
             new_hour = int(logged_in_seconds/3600);
             logged_in_seconds = logged_in_seconds - (new_hour * 3600);
