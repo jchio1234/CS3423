@@ -14,17 +14,37 @@ $1 ~ /[a-z]{3}[0-9]{3}/ {
     }
     else
     {
-        #If this is true, the last field is a time
-        if ($NF !~ /in/)
+        #Check if the last field is an "in"
+        if ($NF ~ /^in$/)
         {
-            prev = time[$1];
-            split(prev, a, ":");
-            time[$1] = a[2];
+            split(date,d);
+            d_input = d[4];
+            split(d_input,t,":")
+            d_seconds = 3600*t[1] + 60*t[2];
+            i_time = $7;
+            split(i_time,i,":");
+            i_seconds = 3600*i[1] + 60*i[2];
+            logged_in_seconds = d_seconds - i_seconds;
+            new_hour = int(logged_in_seconds/3600);
+            logged_in_seconds = logged_in_seconds - (new_hour * 3600);
+            new_minutes = int(logged_in_seconds/60);
+            time[$1] = new_hour":"new_minutes;
         }
-        #This field is an "in" which means to calculate from date time
+        #The last field is a time value
         else
         {
-            time[$1] = "fix this";
+            prev_time = time[$1];
+            split(prev_time,p,":");
+            prev_seconds = 3600*p[1] + 60*p[2];
+            gsub(/[()]/,"", $NF);
+            new_time = $NF;
+            split(new_time,n,":");
+            new_seconds = 3600*n[1] + 60*n[2];
+            new_total = prev_seconds + new_seconds;
+            new_h = int(new_total/3600);
+            new_total = new_total - (new_h * 3600);
+            new_m = int(new_total/60);
+            time[$1] = new_h":"new_m;
         }
     }
 }
