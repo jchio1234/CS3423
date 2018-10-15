@@ -1,5 +1,5 @@
 #!/bin/bash
-#Check for a 5th and 6th input and adjust the surrounding characters
+#Check for extra inputs and adjust characters to search for
 if [[ $# -gt 4 ]]; then
     {
         left_char=$5
@@ -17,10 +17,9 @@ else
 fi
 
 #Iterate through each file in the given directory
-echo "Given directory is: $1"
 files="$1/*.item"
-echo "Expanded directory is $files"
 for filename in $files; do
     [ -e "$filename" ] || continue
     echo "Filename is: $filename"
+    #To-Do: Get the relevant data from each file and check for the 10% value
 done
