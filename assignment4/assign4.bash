@@ -20,6 +20,18 @@ fi
 files="$1/*.item"
 for filename in $files; do
     [ -e "$filename" ] || continue
-    echo "Filename is: $filename"
-    #To-Do: Get the relevant data from each file and check for the 10% value
+        for(( i=1;;i++ )); do
+            read "line$i" || break;
+        done < $filename
+        
+        #Store the variables
+        read sName iName <<< $line1
+        read cQuan mQuan <<< $line2
+        
+        echo "Simple name: $sName"
+        echo "Item name: $iName"
+        echo "Current quant: $cQuan"
+        echo "Max quant: $mQuan"
+        echo "Body: $line3"
+        echo ""
 done
