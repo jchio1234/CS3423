@@ -16,6 +16,15 @@ else
     }
 fi
 
+#Store the name of the template file
+template=$2
+
+#Check for output directory and create if needed
+output_dir=$4
+if [[ ! -d $output_dir ]]; then
+    mkdir $output_dir;
+fi
+
 #Iterate through each file in the given directory
 files="$1/*.item"
 for filename in $files; do
@@ -27,11 +36,6 @@ for filename in $files; do
         #Store the variables
         read sName iName <<< $line1
         read cQuan mQuan <<< $line2
-        
-        echo "Simple name: $sName"
-        echo "Item name: $iName"
-        echo "Current quant: $cQuan"
-        echo "Max quant: $mQuan"
-        echo "Body: $line3"
-        echo ""
+       
+        gawk -f assign4.awk -v fName="$filename" -v sName="$sName" -v iNa\me="$iName" -v cQuan="$cQuan" -v mQuan="$mQuan" -v body="$line3" $template
 done
