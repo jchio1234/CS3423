@@ -19,6 +19,9 @@ fi
 #Store the name of the template file
 template=$2
 
+#Store the date
+g_date=$3
+
 #Check for output directory and create if needed
 output_dir=$4
 if [[ ! -d $output_dir ]]; then
@@ -36,6 +39,6 @@ for filename in $files; do
         #Store the variables
         read sName iName <<< $line1
         read cQuan mQuan <<< $line2
-       
-        gawk -f assign4.awk -v fName="$filename" -v sName="$sName" -v iNa\me="$iName" -v cQuan="$cQuan" -v mQuan="$mQuan" -v body="$line3" $template
+        
+        gawk -f assign4.awk -v fName="$filename" -v sName="$sName" -v iName="$iName" \-v cQuan="$cQuan" -v mQuan="$mQuan" -v body="$line3" -v l_char="$left_char" -v r_char\="$right_char" -v g_date="$g_date" -v template="$template" $template
 done
