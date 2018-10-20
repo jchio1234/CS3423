@@ -4,11 +4,13 @@ if [[ $# -gt 4 ]]; then
     {
         left_char=$5
         right_char=$6
+        extra_credit="true"
     }
 else
     {
         left_char="<<"
         right_char=">>"
+        extra_credit="false"
     }
 fi
 
@@ -37,7 +39,7 @@ for filename in $files; do
         read cQuan mQuan <<< $line2
         
         #Pass variables into awk script
-        gawk -f assign4.awk -v fName="$filename" -v sName="$sName" -v iName="$iName" \-v cQuan="$cQuan" -v mQuan="$mQuan" -v body="$line3" -v l_char="$left_char" -v r_char\="$right_char" -v g_date="$g_date" -v template="$template" $template
+        gawk -f assign4.awk -v fName="$filename" -v sName="$sName" -v iName="$iName" \-v cQuan="$cQuan" -v mQuan="$mQuan" -v body="$line3" -v l_char="$left_char" -v r_char\="$right_char" -v g_date="$g_date" -v template="$template" -v extra_credit="$extra_credit" $template
 done
 
 #Iterate through all sed files
@@ -45,6 +47,6 @@ sed_files="*.sed"
 for sed_file in $sed_files; do
     item_num=`echo $sed_file | sed "s/\.sed//g"`
     item_out="$item_num.out"
-    sed -E -f $sed_file $template > ./output/$item_out
+    sed -E -f $sed_file $template > $output_dir/$item_out
     rm $sed_file
 done

@@ -11,6 +11,9 @@ BEGIN {total=0}
     if(current_percentage < 10) {
         split(sfName,f,".");
         item_num=f[1];
+        if(extra_credit == "true") {
+
+        }
         print "s/"l_char "simple_name" r_char "/" sName "/g" > item_num ".sed"
         print "s/"l_char "item_name" r_char "/" iName "/g" > item_num ".sed"
         print "s/"l_char "current_quantity" r_char "/" cQuan "/g" > item_num ".sed"
