@@ -17,22 +17,8 @@ BEGIN {total=0}
         print "s/"l_char "max_quantity" r_char "/" mQuan "/g" > item_num ".sed"
         print "s/"l_char "body" r_char "/" body "/g" > item_num ".sed"
         print "s:"l_char "date" r_char ":" g_date ":g" > item_num ".sed"
-        print "sed -i.out -E -f " item_num ".sed " template
         exit
     }
 }
 END {
-    printf("awk template: %s\n", template);
-    printf("awk item number: %s\n", item_num);
-    printf("awk left char: %s\n", l_char);
-    printf("awk right char: %s\n", r_char);
-    printf("awk given date: %s\n", g_date);
-    printf("awk filename: %s\n", sfName);
-    printf("awk simple name: %s\n", sName);
-    printf("awk item name: %s\n", iName);
-    printf("awk current quantity: %s\n", cQuan);
-    printf("awk max quantity: %s\n", mQuan);
-    printf("awk current percentage: %d\n", current_percentage);
-    printf("awk body: %s\n", body);
-    print("\n");
 }
