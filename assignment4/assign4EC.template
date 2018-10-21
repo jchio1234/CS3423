@@ -10,7 +10,7 @@
             </li>
         </ul>
         <p>
-            {body|
+            {body| {body|
         </p>
         <p>
             {date|
