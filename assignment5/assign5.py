@@ -18,3 +18,11 @@ else:
     right_char = '>>'
     print("Left char: " + left_char)
     print("Right char: " + right_char)
+
+#Store the name of the template file
+template = sys.argv[2]
+print("Template is: " + template)
+
+#Store the date
+g_date = sys.argv[3]
+print("Date is: " + g_date)
