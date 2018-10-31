@@ -3,6 +3,12 @@
 import sys
 import os
 
+#Make sure that there are 4 arguments
+if len(sys.argv) < 5:
+    print("Error: Not enough arguments")
+    print("Usage: [python file] [data directory] [template file] [date] [output directory]")
+    sys.exit(1)
+
 #Check if output directory exists or create it
 if not os.path.exists(sys.argv[4]):
     os.mkdir(sys.argv[4])
@@ -22,11 +28,12 @@ g_date = sys.argv[3]
 #Iterate over the ".item" files in the directory
 for file in os.listdir(data_dir):
     if file.endswith('.item'):
-        with open(data_dir + '/'+ file, 'r') as f:
+        with open(data_dir + '/' + file, 'r') as f:
             line_num = 0
             for line in f:
                 line_num += 1
-                print('File: ' + file + ' Line #: ' + str(line_num))
-                #words = line.split():
+                words = line.split()
+                print("Line " + str(line_num) + ": " + " ".join(words))
+            print()
                 
 
