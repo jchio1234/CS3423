@@ -23,7 +23,7 @@ def list_files_to_process(files_list):
             for line in f:
                 line_num += 1
                 if line_num == 2:
-                    info = re.match(r"(?P<current_quant>\d+)\s+(?P<max_quant>\d+)", line)
+                    info = re.match(r'(?P<current_quant>\d+)\s+(?P<max_quant>\d+)', line)
                     if check_for_invalid_inventory(info['current_quant'], info['max_quant']):
                         files_to_process.append(f)
     return files_to_process
@@ -36,16 +36,36 @@ def check_for_invalid_inventory(current_quant_string, max_quant_string):
         return True
     return False
 
+
+#Creates the '.output' file
+def create_output(file_name, s_name, i_name, c_quan, m_quan, body):
+    item = re.match(r'.*(?P<num>\d\d\d\d)\.item', file_name)
+    print('Item Number is: ' + item['num'])
+    print('Now we just need to sub and write to a ".out" file!')
+
+
 #Process files
 def process_files(file_list):
+    name = {}
+    item = {}
+    body = ''
     for file in file_list:
-        with open(data_dir + '/' + file, 'r') as f:
-            print('Time to process!')
+        with open(file.name, 'r') as f:
+            line_num = 0
+            for line in f:
+                line_num += 1
+                if line_num == 1:
+                    name = re.match(r'(?P<simple_name>\w+)\s+(?P<item_name>.+)', line)
+                if line_num == 2:
+                    item = re.match(r'(?P<current_quant>\d+)\s+(?P<max_quant>\d+)', line)
+                if line_num == 3:
+                    body = re.match(r'^[^\n]*$', line)
+        create_output(f.name, name['simple_name'], name['item_name'], item['current_quant'], item['max_quant'], body.group(0))
 
 #Verify that the user entered the minimum number of arguments or exit with usage message
 if len(sys.argv) < 5:
-    print("Error: Not enough arguments")
-    print("Usage: [python file] [data directory] [template file] [date] [output directory]")
+    print('Error: Not enough arguments')
+    print('Usage: [python file] [data directory] [template file] [date] [output directory]')
     sys.exit(1)
 
 #Check if output directory exists or create it
@@ -72,5 +92,4 @@ all_files = list_item_files(data_dir)
 files_to_process = list_files_to_process(all_files)
 
 #Process the files and produce the output files
-for file in files_to_process:
-    print('File: ' + os.path.basename(file.name) + ' will be processed!')
+process_files(files_to_process)
