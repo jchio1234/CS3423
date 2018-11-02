@@ -23,8 +23,8 @@ def list_files_to_process(files_list):
             for line in f:
                 line_num += 1
                 if line_num == 2:
-                    info = re.match(r'(?P<current_quant>\d+)\s+(?P<max_quant>\d+)', line)
-                    if check_for_invalid_inventory(info['current_quant'], info['max_quant']):
+                    info = re.match(r'(\d+)\s+(\d+)', line)
+                    if check_for_invalid_inventory(info.group(1), info.group(2)):
                         files_to_process.append(f)
     return files_to_process
 
