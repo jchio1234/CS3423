@@ -133,8 +133,8 @@ if not os.path.exists(sys.argv[4]):
 
 #Check for extra credit args
 if len(sys.argv) > 5:
-    left_char = sys.argv[5].replace("'", "")
-    right_char = sys.argv[6].replace("'", "")
+    left_char = re.escape(sys.argv[5].replace("'", ""))
+    right_char = re.escape(sys.argv[6].replace("'", ""))
 else:
     left_char = '<<'
     right_char = '>>'
