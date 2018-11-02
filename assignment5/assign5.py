@@ -85,8 +85,8 @@ def create_output_file(output_file, lines_to_write):
 
 #Creates the '.output' file
 def process_lines(file_name, s_name, i_name, c_quan, m_quan, body):
-    item = re.match(r'.*(?P<num>\d\d\d\d)\.item', file_name)
-    output_file_name = item['num'] + '.item'
+    item = re.match(r'.*(\d\d\d\d)\.item', file_name)
+    output_file_name = item.group(1) + '.item'
     output_directory = output_dir + '/' + output_file_name
     lines_to_write = []
 
@@ -119,7 +119,7 @@ def process_files(file_list):
                     item = re.match(r'(\d+)\s+(\d+)', line)
                 if line_num == 3:
                     body = re.match(r'^[^\n]*$', line)
-        process_lines(f.name, name.group(1), name.group2, item.group(1), item.group(2), body.group(0))
+        process_lines(f.name, name.group(1), name.group(2), item.group(1), item.group(2), body.group(0))
 
 #Verify that the user entered the minimum number of arguments or exit with usage message
 if len(sys.argv) < 5:
