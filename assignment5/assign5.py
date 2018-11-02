@@ -107,19 +107,19 @@ def process_lines(file_name, s_name, i_name, c_quan, m_quan, body):
 def process_files(file_list):
     name = {}
     item = {}
-    body = ''
+    body = {}
     for file in file_list:
         with open(file.name, 'r') as f:
             line_num = 0
             for line in f:
                 line_num += 1
                 if line_num == 1:
-                    name = re.match(r'(?P<simple_name>\w+)\s+(?P<item_name>.+)', line)
+                    name = re.match(r'(\w+)\s+(.+)', line)
                 if line_num == 2:
-                    item = re.match(r'(?P<current_quant>\d+)\s+(?P<max_quant>\d+)', line)
+                    item = re.match(r'(\d+)\s+(\d+)', line)
                 if line_num == 3:
                     body = re.match(r'^[^\n]*$', line)
-        process_lines(f.name, name['simple_name'], name['item_name'], item['current_quant'], item['max_quant'], body.group(0))
+        process_lines(f.name, name.group(1), name.group2, item.group(1), item.group(2), body.group(0))
 
 #Verify that the user entered the minimum number of arguments or exit with usage message
 if len(sys.argv) < 5:
