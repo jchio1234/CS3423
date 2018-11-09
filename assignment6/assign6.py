@@ -4,6 +4,7 @@ import sys
 import os
 import re
 import shutil
+import zipfile
 
 
 # Create directory if it does not exist
@@ -20,6 +21,14 @@ def create_misc_directory():
     if not os.path.isdir(temp_dir_name):
         os.mkdir(temp_dir_name)
     return temp_dir_name
+
+
+# Create the zip directory specified by optional argument
+def create_zip_directory(directory_name):
+    files_in_directory = os.listdir(directory_name)
+    with zipfile.ZipFile(current_directory + '/' + zip_assignment + '.zip', 'w') as new_zip:
+        for file in files_in_directory:
+            new_zip.write(file)
 
 
 # Verify the correct number of arguments
@@ -58,15 +67,10 @@ for file in all_files:
     if suffix:
         dir_name = create_directory(suffix.group(1))
         shutil.move(current_directory + '/' + file, dir_name)
+        if zip_assignment and zip_assignment == suffix.group(1):
+            create_zip_directory(dir_name)
     # If the file does not have a valid suffix, create 'misc' directory and move the file
     else:
         misc_dir = create_misc_directory()
         shutil.move(current_directory + '/' + file, misc_dir)
 
-# If extra credit, create appropriate zip folder
-if zip_assignment:
-    # zip up the appropriate files
-    print('Time to zip!')
-else:
-    # end
-    print('Time to end!')
