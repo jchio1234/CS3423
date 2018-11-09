@@ -7,7 +7,7 @@ import shutil
 
 
 # Create directory if it does not exist
-def check_if_directory_exists(directory_suffix):
+def create_directory(directory_suffix):
     temp_dir_name = current_directory + '/assignment' + directory_suffix
     if not os.path.isdir(temp_dir_name):
         os.mkdir(temp_dir_name)
@@ -38,19 +38,35 @@ if not os.path.isdir(sys.argv[1]):
 # Get the directory argument
 current_directory = sys.argv[1]
 
-# Get all files in the directory
-all_files = os.listdir(current_directory)
-
 # Get the optional argument if it exists
-if sys.argv[2]:
+if len(sys.argv) > 2:
     zip_assignment = sys.argv[2]
+else:
+    zip_assignment = None
+
+# Get all files in the directory
+if zip_assignment:
+    print('EC is defined!')
+else:
+    print('EC is not defined!')
+all_files = os.listdir(current_directory)
 
 # Iterate through each file in the directory
 for file in all_files:
     suffix = re.match(r'proj([\w]*).', file)
+    # If file has valid suffix, create the appropriate directory and move the file
     if suffix:
-        dir_name = check_if_directory_exists(suffix.group(1))
+        dir_name = create_directory(suffix.group(1))
         shutil.move(current_directory + '/' + file, dir_name)
+    # If the file does not have a valid suffix, create 'misc' directory and move the file
     else:
         misc_dir = create_misc_directory()
         shutil.move(current_directory + '/' + file, misc_dir)
+
+# If extra credit, create appropriate zip folder
+if zip_assignment:
+    # zip up the appropriate files
+    print('Time to zip!')
+else:
+    # end
+    print('Time to end!')
