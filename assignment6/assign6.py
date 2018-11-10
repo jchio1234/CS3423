@@ -4,7 +4,6 @@ import sys
 import os
 import re
 import shutil
-import zipfile
 
 
 # Create directory if it does not exist
@@ -26,9 +25,6 @@ def create_misc_directory():
 # Create the zip directory specified by optional argument
 def create_zip_directory(directory_name):
     files_in_directory = os.listdir(directory_name)
-    with zipfile.ZipFile(current_directory + '/' + zip_assignment + '.zip', 'w') as new_zip:
-        for file in files_in_directory:
-            new_zip.write(file)
 
 
 # Verify the correct number of arguments
@@ -54,22 +50,22 @@ else:
     zip_assignment = None
 
 # Get all files in the directory
-if zip_assignment:
-    print('EC is defined!')
-else:
-    print('EC is not defined!')
 all_files = os.listdir(current_directory)
 
 # Iterate through each file in the directory
 for file in all_files:
-    suffix = re.match(r'proj([\w]*).', file)
+    suffix = re.match(r'(proj)([\w]*).', file)
     # If file has valid suffix, create the appropriate directory and move the file
-    if suffix:
-        dir_name = create_directory(suffix.group(1))
+    if suffix and suffix.group(1) and suffix.group(2):
+        dir_name = create_directory(suffix.group(2))
         shutil.move(current_directory + '/' + file, dir_name)
-        if zip_assignment and zip_assignment == suffix.group(1):
+        if zip_assignment and zip_assignment == suffix.group(2):
             create_zip_directory(dir_name)
-    # If the file does not have a valid suffix, create 'misc' directory and move the file
+    # If file does not have a valid suffix, create 'assignment' directory and move the file
+    elif suffix and suffix.group(1) and not suffix.group(2):
+        dir_name = create_directory('')
+        shutil.move(current_directory + '/' + file, dir_name)
+    # If the file does not have a valid prefix or suffix, create 'misc' directory and move the file
     else:
         misc_dir = create_misc_directory()
         shutil.move(current_directory + '/' + file, misc_dir)
