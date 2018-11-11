@@ -22,11 +22,6 @@ def create_misc_directory():
     return temp_dir_name
 
 
-# Create the zip directory specified by optional argument
-def create_zip_directory(directory_name):
-    files_in_directory = os.listdir(directory_name)
-
-
 # Verify the correct number of arguments
 if len(sys.argv) < 2:
     print('Error: Not enough arguments')
@@ -59,8 +54,6 @@ for file in all_files:
     if suffix and suffix.group(1) and suffix.group(2):
         dir_name = create_directory(suffix.group(2))
         shutil.move(current_directory + '/' + file, dir_name)
-        if zip_assignment and zip_assignment == suffix.group(2):
-            create_zip_directory(dir_name)
     # If file does not have a valid suffix, create 'assignment' directory and move the file
     elif suffix and suffix.group(1) and not suffix.group(2):
         dir_name = create_directory('')
@@ -70,3 +63,9 @@ for file in all_files:
         misc_dir = create_misc_directory()
         shutil.move(current_directory + '/' + file, misc_dir)
 
+# If extra credit argument is present, check for file and create the appropriate zip directory
+if zip_assignment:
+    specified_directory = current_directory + '/assignment' + zip_assignment
+    if os.path.isdir(specified_directory):
+        shutil.make_archive('assignment' + zip_assignment, 'zip', specified_directory)
+        shutil.move('./assignment' + zip_assignment + '.zip', current_directory)
