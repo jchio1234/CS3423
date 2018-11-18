@@ -1,3 +1,9 @@
+// Constants
+#define MAX_ITEM_NAME 64
+#define MAX_SIMPLE_NAME 16
+#define MAX_DESCRIPTION 128
+
+// Struct
 typedef struct
 {
     char itemName[64];

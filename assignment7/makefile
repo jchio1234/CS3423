@@ -1,16 +1,11 @@
-# Define the machine object file
-OBJECTS = assign7.o
-# Define the include file
-INCLUDES = assign7.h
+# Rules for building each .o
+assign7.o: assign7.c assign7.h
+	gcc -g -c assign7.c -o assign7.o
 
-# Make for the executable
-assign7: ${OBJECTS}
-	gcc -g -o assign7 ${OBJECTS}
+# Rules for building the executable
+assign7: assign7.o
+	gcc -g -o assign7 assign7.o
 
-# Simple suffix rules for the .o
-%.o: %.c ${INCLUDES}
-	gcc -g -c $<
-
-# Clean the .o files
+# Special rule to remove the .o files
 clean:
-	rm -f ${OBJECTS}
+	rm -f assign7.o
