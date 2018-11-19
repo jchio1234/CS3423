@@ -1,5 +1,5 @@
 // Constants
-#define INVENTORY_FILE "inventory2.dat"
+#define INVENTORY_FILE "inventory.dat"
 
 // Struct
 typedef struct

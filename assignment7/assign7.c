@@ -12,7 +12,7 @@ void printMenu()
     printf("D - delete an existing item\n");
 }
 
-int checkForFile(char *fileName) {
+void checkForFile(char *fileName) {
     FILE *inventoryFile;
 
     // Open binary file or create if it does not exist
@@ -27,10 +27,8 @@ int checkForItem(int itemNumber) {
     Item item;
     int numRecRead;
 
-    printf("Item number is: %d\n", itemNumber);
     inventoryFile = fopen(INVENTORY_FILE, "rb");
     numRecRead = fread(&item, sizeof(Item), 1L, inventoryFile);
-    printf("Number of entries found is: %d\n", numRecRead);
     return numRecRead;
 }
 
@@ -40,8 +38,7 @@ void createItem() {
     int checkResult;
 
     // Get item number and check if item already exists
-    scanf(" %d\n", &itemNumber);
-    printf("Item number is: %d\n", itemNumber);
+    scanf(" %d", &itemNumber);
     checkResult = checkForItem(itemNumber);
     if(checkResult != 1) {
         printf("ERROR: item already exists\n");
