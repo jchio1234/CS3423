@@ -18,7 +18,7 @@ void createItem()
 {
     Item item;
     int itemNumber;
-    char *buffer[MAX_DESCRIPTION];
+    char buffer[MAX_DESCRIPTION];
 
     // Get item number and check if item already exists
     scanf("%d\n", &itemNumber);
