@@ -24,24 +24,22 @@ void createItem()
     scanf("%d\n", &itemNumber);
 
     // Get simple name
-    fgets(buffer, MAX_SIMPLE_NAME, stdin);
-    sscanf(buffer, "%s", item.simpleName);
+    fgets(item.simpleName, sizeof item.simpleName, stdin);
+    item.simpleName[strcspn(item.simpleName, "\n")] = '\0';
 
     // Get item name
-    fgets(buffer, MAX_ITEM_NAME, stdin);
-    sscanf(buffer, "%s", item.itemName);
+    fgets(item.itemName, sizeof item.itemName, stdin);
+    item.itemName[strcspn(item.itemName, "\n")] = '\0';
 
     // Get current quantity
-    fgets(buffer, MAX_DESCRIPTION, stdin);
-    sscanf(buffer, "%d", &item.currentQuantity);
+    scanf("%d\n", &item.currentQuantity);
 
     // Get max quantity
-    fgets(buffer, MAX_DESCRIPTION, stdin);
-    sscanf(buffer, "%d", &item.maxQuantity);
+    scanf("%d\n", &item.maxQuantity);
 
     // Get description
-    fgets(buffer, MAX_DESCRIPTION, stdin);
-    sscanf(buffer, "%s", item.body);
+    fgets(item.body, sizeof item.body, stdin);
+    item.body[strcspn(item.body, "\n")] = '\0';
 
     // Print struct for testing
     printf("Item number: %d\n", itemNumber);
