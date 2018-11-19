@@ -23,13 +23,17 @@ void checkForFile(char *fileName) {
 }
 
 int checkForItem(int itemNumber) {
-    FILE *inventoryFile;
+    FILE *p;
     Item item;
-    int numRecRead;
+    int seekResult;
 
-    inventoryFile = fopen(INVENTORY_FILE, "rb");
-    numRecRead = fread(&item, sizeof(Item), 1L, inventoryFile);
-    return numRecRead;
+    p = fopen(INVENTORY_FILE, "rb");
+    long int relativeByteAddress = (itemNumber - 1) * sizeof(Item);
+    printf("Item number - 1 is: %d\n", itemNumber-1);
+    printf("Size of struct is: %lu\n", sizeof(Item));
+    printf("Relative address is: %ld\n", relativeByteAddress);
+    seekResult = fseek(p, relativeByteAddress, SEEK_SET);
+    return seekResult;
 }
 
 void createItem() {
@@ -40,7 +44,8 @@ void createItem() {
     // Get item number and check if item already exists
     scanf(" %d", &itemNumber);
     checkResult = checkForItem(itemNumber);
-    if(checkResult != 1) {
+    printf("Result of seek is: %d\n", checkResult);
+    if(checkResult != 0) {
         printf("ERROR: item already exists\n");
         return;
     }
