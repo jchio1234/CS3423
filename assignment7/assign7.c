@@ -14,20 +14,39 @@ void printMenu()
     printf("D - delete an existing item\n");
 }
 
+int checkForItem(int itemNumber) {
+    FILE *inventoryFile;
+    Item item;
+    int numRecRead;
+
+    printf("Item number is: %d\n", itemNumber);
+    inventoryFile = fopen(INVENTORY_FILE, "rb");
+    numRecRead = fread(&item, sizeof(Item), 1L, inventoryFile);
+    printf("Number of entries found is: %d\n", numRecRead);
+    return numRecRead;
+}
+
 void createItem()
 {
     Item item;
     int itemNumber;
+    int checkResult;
     char buffer[MAX_DESCRIPTION];
 
     // Get item number and check if item already exists
     scanf("%d\n", &itemNumber);
+    printf("Item number is: %d\n", itemNumber);
+    checkResult = checkForItem(itemNumber);
+    if(checkResult != 1) {
+        printf("ERROR: item already exists");
+        return;
+    }
 
-    // Get simple name
+    // Get simple name and remove trailing newline
     fgets(item.simpleName, sizeof item.simpleName, stdin);
     item.simpleName[strcspn(item.simpleName, "\n")] = '\0';
 
-    // Get item name
+    // Get item name and remove trailing newline
     fgets(item.itemName, sizeof item.itemName, stdin);
     item.itemName[strcspn(item.itemName, "\n")] = '\0';
 
@@ -37,7 +56,7 @@ void createItem()
     // Get max quantity
     scanf("%d\n", &item.maxQuantity);
 
-    // Get description
+    // Get description and remove trailing newline
     fgets(item.body, sizeof item.body, stdin);
     item.body[strcspn(item.body, "\n")] = '\0';
 
