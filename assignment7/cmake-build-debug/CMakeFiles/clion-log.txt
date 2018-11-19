@@ -1,1 +1,4 @@
-CMakeLists.txt not found in /Users/rafael/GitHub/CS3423/assignment7 Select CMakeLists.txt file...
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/rafael/GitHub/CS3423/assignment7
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /Users/rafael/GitHub/CS3423/assignment7/cmake-build-debug

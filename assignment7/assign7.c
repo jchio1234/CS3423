@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS 1
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,6 +12,16 @@ void printMenu()
     printf("D - delete an existing item\n");
 }
 
+int checkForFile(char *fileName) {
+    FILE *inventoryFile;
+
+    // Open binary file or create if it does not exist
+    inventoryFile = fopen(fileName, "ab+");
+
+    // Close binary file
+    fclose(inventoryFile);
+}
+
 int checkForItem(int itemNumber) {
     FILE *inventoryFile;
     Item item;
@@ -26,19 +34,17 @@ int checkForItem(int itemNumber) {
     return numRecRead;
 }
 
-void createItem()
-{
+void createItem() {
     Item item;
     int itemNumber;
     int checkResult;
-    char buffer[MAX_DESCRIPTION];
 
     // Get item number and check if item already exists
-    scanf("%d\n", &itemNumber);
+    scanf(" %d\n", &itemNumber);
     printf("Item number is: %d\n", itemNumber);
     checkResult = checkForItem(itemNumber);
     if(checkResult != 1) {
-        printf("ERROR: item already exists");
+        printf("ERROR: item already exists\n");
         return;
     }
 
@@ -69,8 +75,9 @@ void createItem()
     printf("Description: %s\n", item.body);
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
+    checkForFile(INVENTORY_FILE);
+
     char userCode;
     int numScans = 0;
     do

@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/rafael/GitHub/CS3423/assignment7/assign7.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+assign7.h
+/Users/rafael/GitHub/CS3423/assignment7/assign7.h
+
+/Users/rafael/GitHub/CS3423/assignment7/assign7.h
+
