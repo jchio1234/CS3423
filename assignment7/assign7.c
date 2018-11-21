@@ -138,12 +138,18 @@ void updateItem() {
     // Get simple name
     printf("Enter an simple name:\n");
     fgets(buffer, MAX_DESCRIPTION, stdin);
-    sscanf(buffer, "%s", item.simpleName);
+    if(buffer[0] = '\n')
+        strcpy(item.simpleName, "\0");
+    else
+        sscanf(buffer, "%s", item.simpleName);
 
     // Get item name
     printf("Enter an item name:\n");
     fgets(buffer, MAX_DESCRIPTION, stdin);
-    sscanf(buffer, "%[^\n]s", item.itemName);
+    if(buffer[0] = '\n')
+        strcpy(item.itemName, "\0");
+    else
+        sscanf(buffer, "%s", item.itemName);
 
     // Get current quantity
     printf("Enter a current quantity:\n");
@@ -164,7 +170,10 @@ void updateItem() {
     // Get description
     printf("Enter a description:\n");
     fgets(buffer, MAX_DESCRIPTION, stdin);
-    sscanf(buffer, "%[^\n]s", item.body);
+    if(buffer[0] = '\n')
+        strcpy(item.body, "\0");
+    else
+        sscanf(buffer, "%s", item.body);
 
     // Open file and read data into buffer
     p = fopen(INVENTORY_FILE, "rb+");
