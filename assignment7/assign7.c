@@ -138,7 +138,7 @@ void updateItem() {
     // Get simple name
     printf("Enter an simple name:\n");
     fgets(buffer, MAX_DESCRIPTION, stdin);
-    if(buffer[0] = '\n')
+    if(buffer[0] == '\n')
         strcpy(item.simpleName, "\0");
     else
         sscanf(buffer, "%s", item.simpleName);
@@ -146,7 +146,7 @@ void updateItem() {
     // Get item name
     printf("Enter an item name:\n");
     fgets(buffer, MAX_DESCRIPTION, stdin);
-    if(buffer[0] = '\n')
+    if(buffer[0] == '\n')
         strcpy(item.itemName, "\0");
     else
         sscanf(buffer, "%s", item.itemName);
@@ -170,7 +170,7 @@ void updateItem() {
     // Get description
     printf("Enter a description:\n");
     fgets(buffer, MAX_DESCRIPTION, stdin);
-    if(buffer[0] = '\n')
+    if(buffer[0] == '\n')
         strcpy(item.body, "\0");
     else
         sscanf(buffer, "%s", item.body);
