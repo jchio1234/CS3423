@@ -1,4 +1,5 @@
 // Constants
+#define MAX_DESCRIPTION 128
 #define INVENTORY_FILE "inventory.dat"
 
 // Struct

@@ -12,7 +12,7 @@ void printMenu()
     printf("D - delete an existing item\n");
 }
 
-void checkForFile(char *fileName) {
+void checkForInventoryFile(char *fileName) {
     FILE *inventoryFile;
 
     // Open binary file or create if it does not exist
@@ -22,64 +22,223 @@ void checkForFile(char *fileName) {
     fclose(inventoryFile);
 }
 
-int checkForItem(int itemNumber) {
+int checkForExistingItem(int itemNumber) {
     FILE *p;
     Item item;
-    int seekResult;
+    long readResult;
 
+    // Open file, read data into buffer, and return result of read
     p = fopen(INVENTORY_FILE, "rb");
-    long int relativeByteAddress = (itemNumber - 1) * sizeof(Item);
-    printf("Item number - 1 is: %d\n", itemNumber-1);
-    printf("Size of struct is: %lu\n", sizeof(Item));
-    printf("Relative address is: %ld\n", relativeByteAddress);
-    seekResult = fseek(p, relativeByteAddress, SEEK_SET);
-    return seekResult;
+    long int relativeByteAddress = itemNumber * sizeof(Item);
+    fseek(p, relativeByteAddress, SEEK_SET);
+    readResult = fread(&item, sizeof(Item), 1L, p);
+    fclose(p);
+    if(item.maxQuantity == 0)
+        readResult = 0;
+    return readResult;
 }
 
 void createItem() {
+    FILE *p;
     Item item;
     int itemNumber;
     int checkResult;
+    char buffer[MAX_DESCRIPTION];
 
     // Get item number and check if item already exists
-    scanf(" %d", &itemNumber);
-    checkResult = checkForItem(itemNumber);
-    printf("Result of seek is: %d\n", checkResult);
+    scanf("%d", &itemNumber);
+    getchar();
+    checkResult = checkForExistingItem(itemNumber);
     if(checkResult != 0) {
         printf("ERROR: item already exists\n");
         return;
     }
 
-    // Get simple name and remove trailing newline
-    fgets(item.simpleName, sizeof item.simpleName, stdin);
-    item.simpleName[strcspn(item.simpleName, "\n")] = '\0';
+    // Get simple name
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    sscanf(buffer, "%s", item.simpleName);
 
-    // Get item name and remove trailing newline
-    fgets(item.itemName, sizeof item.itemName, stdin);
-    item.itemName[strcspn(item.itemName, "\n")] = '\0';
+    // Get item name
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    sscanf(buffer, "%[^\n]s", item.itemName);
 
     // Get current quantity
-    scanf("%d\n", &item.currentQuantity);
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    sscanf(buffer, "%d", &item.currentQuantity);
 
     // Get max quantity
-    scanf("%d\n", &item.maxQuantity);
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    sscanf(buffer, "%d", &item.maxQuantity);
 
-    // Get description and remove trailing newline
-    fgets(item.body, sizeof item.body, stdin);
-    item.body[strcspn(item.body, "\n")] = '\0';
+    // Get description
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    sscanf(buffer, "%[^\n]s", item.body);
 
-    // Print struct for testing
-    printf("Item number: %d\n", itemNumber);
-    printf("Simple name: %s\n", item.simpleName);
+    // Write item to file
+    p = fopen(INVENTORY_FILE, "rb+");
+    long int relativeByteAddress = itemNumber * sizeof(Item);
+    fseek(p, relativeByteAddress, SEEK_SET);
+    long writeResult = fwrite(&item, sizeof(Item), 1L, p);
+    if(writeResult != 1)
+        printf("Error writing record %d\n", itemNumber);
+    fclose(p);
+}
+
+void readItem() {
+    FILE *p;
+    Item item;
+    int itemNumber;
+    int checkResult;
+
+    // Get item number and check if item does not exist
+    printf("Enter an item number:\n");
+    scanf("%d", &itemNumber);
+    getchar();
+    checkResult = checkForExistingItem(itemNumber);
+    if(checkResult == 0) {
+        printf("ERROR: item not found\n");
+        return;
+    }
+
+    // Open file and read data into buffer
+    p = fopen(INVENTORY_FILE, "rb");
+    long int relativeByteAddress = itemNumber * sizeof(Item);
+    fseek(p, relativeByteAddress, SEEK_SET);
+    long readResult = fread(&item, sizeof(Item), 1L, p);
+    if(readResult != 1)
+        printf("Error reading record %d\n", itemNumber);
+
+    // Print read result
     printf("Item name: %s\n", item.itemName);
-    printf("Current quantity: %d\n", item.currentQuantity);
-    printf("Max quantity: %d\n", item.maxQuantity);
+    printf("Simple name: %s\n", item.simpleName);
+    printf("Item Number: %d\n", itemNumber);
+    printf("Qty: %d/%d\n", item.currentQuantity, item.maxQuantity);
     printf("Description: %s\n", item.body);
+    fclose(p);
+}
+
+void updateItem() {
+    FILE *p;
+    Item item;
+    Item existingItem;
+    int itemNumber;
+    int checkResult;
+    char buffer[MAX_DESCRIPTION];
+
+    // Get item number and check if item already exists
+    printf("Enter an item number:\n");
+    scanf("%d", &itemNumber);
+    getchar();
+    checkResult = checkForExistingItem(itemNumber);
+    if(checkResult == 0) {
+        printf("ERROR: item not found\n");
+        return;
+    }
+
+    // Get simple name
+    printf("Enter an simple name:\n");
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    sscanf(buffer, "%s", item.simpleName);
+
+    // Get item name
+    printf("Enter an item name:\n");
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    sscanf(buffer, "%[^\n]s", item.itemName);
+
+    // Get current quantity
+    printf("Enter a current quantity:\n");
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    if(buffer[0] == '\n')
+        item.currentQuantity = 0;
+    else
+        sscanf(buffer, "%d", &item.currentQuantity);
+
+    // Get max quantity
+    printf("Enter a max quantity:\n");
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    if(buffer[0] == '\n')
+        item.maxQuantity = 0;
+    else
+        sscanf(buffer, "%d", &item.maxQuantity);
+
+    // Get description
+    printf("Enter a description:\n");
+    fgets(buffer, MAX_DESCRIPTION, stdin);
+    sscanf(buffer, "%[^\n]s", item.body);
+
+    // Open file and read data into buffer
+    p = fopen(INVENTORY_FILE, "rb+");
+    long int relativeByteAddress = itemNumber * sizeof(Item);
+    fseek(p, relativeByteAddress, SEEK_SET);
+    long readResult = fread(&existingItem, sizeof(Item), 1L, p);
+    if(readResult != 1)
+        printf("Error reading record %d\n", itemNumber);
+
+    // Update struct items if not empty
+    if(item.itemName[0] == '\0')
+        strcpy(item.itemName, existingItem.itemName);
+    if(item.simpleName[0] == '\0')
+        strcpy(item.simpleName, existingItem.simpleName);
+    if(item.currentQuantity == 0)
+        item.currentQuantity = existingItem.currentQuantity;
+    if(item.maxQuantity == 0)
+        item.maxQuantity = existingItem.maxQuantity;
+    if(item.body[0] == '\0')
+        strcpy(item.body, existingItem.body);
+
+    // Write updated item to file
+    fseek(p, relativeByteAddress, SEEK_SET);
+    long writeResult = fwrite(&item, sizeof(Item), 1L, p);
+    if(writeResult != 1)
+        printf("Error writing record %d\n", itemNumber);
+    fclose(p);
+}
+
+void deleteItem() {
+    FILE *p;
+    Item existingItem;
+    Item emptyItem;
+    int itemNumber;
+    int checkResult;
+
+    // Get item number and check if item does not exist
+    printf("Enter an item number:\n");
+    scanf("%d", &itemNumber);
+    getchar();
+    checkResult = checkForExistingItem(itemNumber);
+    if(checkResult == 0) {
+        printf("ERROR: item not found\n");
+        return;
+    }
+
+    // Populate emptyItem
+    strcpy(emptyItem.itemName, "");
+    strcpy(emptyItem.simpleName, "");
+    emptyItem.currentQuantity = 0;
+    emptyItem.maxQuantity = 0;
+    strcpy(emptyItem.body, "");
+
+    // Open file and read data into buffer
+    p = fopen(INVENTORY_FILE, "rb+");
+    long int relativeByteAddress = itemNumber * sizeof(Item);
+    fseek(p, relativeByteAddress, SEEK_SET);
+    long readResult = fread(&existingItem, sizeof(Item), 1L, p);
+    if(readResult != 1)
+        printf("Error reading record %d\n", itemNumber);
+
+    // Overwrite existing item with emptyItem
+    fseek(p, relativeByteAddress, SEEK_SET);
+    long writeResult = fwrite(&emptyItem, sizeof(Item), 1L, p);
+    if(writeResult != 1)
+        printf("Error writing record %d\n", itemNumber);
+
+    // Print confirmation message
+    printf("%s was successfully deleted.\n", existingItem.simpleName);
+    fclose(p);
 }
 
 int main(int argc, char *argv[]) {
-    checkForFile(INVENTORY_FILE);
-
+    checkForInventoryFile(INVENTORY_FILE);
     char userCode;
     int numScans = 0;
     do
@@ -96,15 +255,15 @@ int main(int argc, char *argv[]) {
             break;
         case 'R':
         case 'r':
-            printf("Time to read!\n");
+            readItem();
             break;
         case 'U':
         case 'u':
-            printf("Time to update!\n");
+            updateItem();
             break;
         case 'D':
         case 'd':
-            printf("Time to delete!\n");
+            deleteItem();
             break;
         default:
             printf("ERROR: invalid option\n");
