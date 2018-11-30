@@ -3,4 +3,4 @@ project(assignment8)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(assignment8 cmdparse.c cmdparse.h)
+add_executable(assignment8 cmdparse.c cmdparse.h assign8.c assign8.h)

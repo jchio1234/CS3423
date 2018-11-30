@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/rafael/GitHub/CS3423/assignment8/assign8.c
+stdio.h
+-
+
+/Users/rafael/GitHub/CS3423/assignment8/cmdparse.c
+stdio.h
+-
+string.h
+-
+cmdparse.h
+/Users/rafael/GitHub/CS3423/assignment8/cmdparse.h
+
+/Users/rafael/GitHub/CS3423/assignment8/cmdparse.h
+

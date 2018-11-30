@@ -82,6 +82,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/rafael/GitHub/CS3423/assignment8/assign8.c">
+			<Option target="assignment8"/>
+		</Unit>
+		<Unit filename="/Users/rafael/GitHub/CS3423/assignment8/assign8.h">
+			<Option target="assignment8"/>
+		</Unit>
 		<Unit filename="/Users/rafael/GitHub/CS3423/assignment8/cmdparse.c">
 			<Option target="assignment8"/>
 		</Unit>

@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/assignment8.dir/cmdparse.c.o"
+  "CMakeFiles/assignment8.dir/assign8.c.o"
   "assignment8.pdb"
   "assignment8"
 )

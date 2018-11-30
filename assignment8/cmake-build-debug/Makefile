@@ -123,6 +123,33 @@ assignment8/fast:
 	$(MAKE) -f CMakeFiles/assignment8.dir/build.make CMakeFiles/assignment8.dir/build
 .PHONY : assignment8/fast
 
+assign8.o: assign8.c.o
+
+.PHONY : assign8.o
+
+# target to build an object file
+assign8.c.o:
+	$(MAKE) -f CMakeFiles/assignment8.dir/build.make CMakeFiles/assignment8.dir/assign8.c.o
+.PHONY : assign8.c.o
+
+assign8.i: assign8.c.i
+
+.PHONY : assign8.i
+
+# target to preprocess a source file
+assign8.c.i:
+	$(MAKE) -f CMakeFiles/assignment8.dir/build.make CMakeFiles/assignment8.dir/assign8.c.i
+.PHONY : assign8.c.i
+
+assign8.s: assign8.c.s
+
+.PHONY : assign8.s
+
+# target to generate assembly for a file
+assign8.c.s:
+	$(MAKE) -f CMakeFiles/assignment8.dir/build.make CMakeFiles/assignment8.dir/assign8.c.s
+.PHONY : assign8.c.s
+
 cmdparse.o: cmdparse.c.o
 
 .PHONY : cmdparse.o
@@ -159,6 +186,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... assignment8"
+	@echo "... assign8.o"
+	@echo "... assign8.i"
+	@echo "... assign8.s"
 	@echo "... cmdparse.o"
 	@echo "... cmdparse.i"
 	@echo "... cmdparse.s"
