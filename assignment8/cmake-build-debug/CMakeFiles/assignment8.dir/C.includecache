@@ -9,14 +9,24 @@
 /Users/rafael/GitHub/CS3423/assignment8/assign8.c
 stdio.h
 -
-
-/Users/rafael/GitHub/CS3423/assignment8/cmdparse.c
-stdio.h
--
 string.h
 -
+errno.h
+-
+stdarg.h
+-
+stdlib.h
+-
+unistd.h
+-
+sys/wait.h
+-
+assign8.h
+/Users/rafael/GitHub/CS3423/assignment8/assign8.h
 cmdparse.h
 /Users/rafael/GitHub/CS3423/assignment8/cmdparse.h
+
+/Users/rafael/GitHub/CS3423/assignment8/assign8.h
 
 /Users/rafael/GitHub/CS3423/assignment8/cmdparse.h
 
