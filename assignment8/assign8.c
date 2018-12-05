@@ -28,15 +28,22 @@ int main(int argc, char *argv[])
     char userInput[MAX_BUFFER];
     CMD cmd;
     long forkPid;
+    long forkPidPipe;
     long waitPid;
     int exitStatus = 0;
+    int whileStatus = 1;
+    int readFd, writeFd;
+    int fdArr[2];
 
-    do
+    while(whileStatus == 1)
     {
         int repeat = 0;
         while(repeat == 0)
         {
-            // Get user input
+            // Clear userInput for repeat loops
+            strcpy(userInput, "");
+
+            // Get input from the user
             printf("$ ");
             fgets(buffer, MAX_BUFFER, stdin);
             sscanf(buffer, "%[^\n]s", userInput);
@@ -46,8 +53,20 @@ int main(int argc, char *argv[])
                 repeat = 1;
         }
 
+        // Break if user enters the "exit" command
+        if(strcmp(userInput, "exit") == 0)
+        {
+            whileStatus = 0;
+            break;
+        }
+
         // Pass user input to parse function
         cmdparse(userInput, &cmd);
+
+        // Create the pipe if the pipe command is present
+        if(cmd.pipelining == 1)
+            if(pipe(fdArr) == -1)
+                errExit("pipe not created: %s", strerror(errno));
 
         // Create a child process
         forkPid = fork();
@@ -58,19 +77,38 @@ int main(int argc, char *argv[])
                 errExit("fork failed: %s", strerror(errno));
                 break;
             case 0: // Child Process
-                //printf("Child Process: PID=%ld, PPID=%ld\n", (long) getpid(), (long) getppid());
+                if(cmd.pipelining == 1)
+                {
+                    if (dup2(fdArr[1], STDOUT_FILENO) == -1)
+                        errExit("Failed to redirect stdout for '%s': %s", cmd.argv1[0], strerror(errno));
+                    close(fdArr[0]);
+                    close(fdArr[1]);
+                }
                 execvp(cmd.argv1[0], cmd.argv1);
                 fprintf(stderr, "parse error\n");
             default: // Parent process
-                waitPid = wait(&exitStatus);
-                if(waitPid == -1)
-                    errExit("wait error: %s", strerror(errno));
-                //printf("Parent Process: PID=%ld, PPID=%ld\n", (long) getpid(), (long) getppid());
-                //printf("Parent Process: my child's PID=%ld\n", forkPid);
-                //printf("Parent Process: wait pid=%ld\n", waitPid);
-                //printf("Parent Process: exit status=%d\n", exitStatus);
+                if(cmd.background != 1)
+                    waitPid = wait(&exitStatus);
+                if(cmd.pipelining == 1)
+                {
+                    forkPidPipe = fork();
+                    switch(forkPidPipe)
+                    {
+                        case -1:
+                            errExit("fork of second child failed: %s", strerror(errno));
+                        case 0:
+                            if(dup2(fdArr[0], STDIN_FILENO) == -1)
+                                errExit("Failed to redirect stdin for '%s': %s", cmd.argv2[0], strerror(errno));
+                            close(fdArr[0]); close(fdArr[1]);
+                            execvp(cmd.argv2[0], cmd.argv2);
+                            fprintf(stderr, "parse error\n");
+                        default:
+                            close(fdArr[0]); close(fdArr[1]);
+                            fprintf(stderr, "PID for '%s': %ld, PID for '%s': %ld\n", cmd.argv1[0], forkPid, cmd.argv2[0], forkPidPipe);
+                            fflush(stderr);
+                    }
+                }
         }
-        //printf("My PID=%ld\n", (long) getpid());
-    } while(strcmp(userInput, "exit") != 0);
+    }
     return 0;
 }
