@@ -21,6 +21,8 @@ unistd.h
 -
 sys/wait.h
 -
+fcntl.h
+-
 assign8.h
 /Users/rafael/GitHub/CS3423/assignment8/assign8.h
 cmdparse.h

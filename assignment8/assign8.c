@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 #include "assign8.h"
 #include "cmdparse.h"
 
@@ -34,6 +35,7 @@ int main(int argc, char *argv[])
     int whileStatus = 1;
     int readFd, writeFd;
     int fdArr[2];
+    int fileFD;
 
     while(whileStatus == 1)
     {
@@ -67,6 +69,32 @@ int main(int argc, char *argv[])
         if(cmd.pipelining == 1)
             if(pipe(fdArr) == -1)
                 errExit("pipe not created: %s", strerror(errno));
+
+        // Check for redirection
+        if(cmd.redirectOut == 1)
+        {
+            // Create the file
+            fileFD = open(cmd.outfile, O_WRONLY|O_CREAT|O_TRUNC, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
+        }
+
+        // Check for append redirection
+        if(cmd.redirectAppend == 1)
+        {
+            // Create the file
+            fileFD = open(cmd.outfile, O_WRONLY|O_APPEND, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
+        }
+
+        // Check for append input
+        if(cmd.redirectIn == 1)
+        {
+            // Check if the file exists
+            fileFD = open(cmd.infile, O_RDONLY|O_EXCL);
+            if(fileFD < 0)
+            {
+                fprintf(stderr, "unable to open file for redirection\n");
+                break;
+            }
+        }
 
         // Create a child process
         forkPid = fork();
