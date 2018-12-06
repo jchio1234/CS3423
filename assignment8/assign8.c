@@ -30,6 +30,7 @@ int main(int argc, char *argv[])
     CMD cmd;
     long forkPid;
     long forkPidPipe;
+    long forkPidRedir;
     long waitPid;
     int exitStatus = 0;
     int whileStatus = 1;
@@ -132,8 +133,30 @@ int main(int argc, char *argv[])
                             fprintf(stderr, "parse error\n");
                         default:
                             close(fdArr[0]); close(fdArr[1]);
-                            fprintf(stderr, "PID for '%s': %ld, PID for '%s': %ld\n", cmd.argv1[0], forkPid, cmd.argv2[0], forkPidPipe);
-                            fflush(stderr);
+                    }
+                }
+                if(cmd.redirectOut == 1 || cmd.redirectAppend == 1 || cmd.redirectIn == 1)
+                {
+                    forkPidRedir = fork();
+                    switch(forkPidRedir)
+                    {
+                        case -1:
+                            errExit("fork of second child failed: %s", strerror(errno));
+                        case 0:
+                            if(cmd.redirectIn == 1)
+                            {
+                                dup2(fileFD, STDIN_FILENO);
+                                close(fileFD);
+                            }
+                            if(cmd.redirectOut == 1 || cmd.redirectAppend == 1)
+                            {
+                                dup2(fileFD, STDOUT_FILENO);
+                                close(fileFD);
+                            }
+                            execvp(cmd.argv1[0], cmd.argv1);
+                            fprintf(stderr, "parse error\n");
+                        default:
+                            close(fileFD);
                     }
                 }
         }

@@ -2,7 +2,7 @@
 #include <string.h>
 #include "cmdparse.h"
 
-#define DEBUG TRUE
+#define DEBUG FALSE
 
 void printCmd(CMD *cmd);
 
