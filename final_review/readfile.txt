@@ -1,0 +1,7 @@
+this
+is
+data
+from
+the
+read
+file

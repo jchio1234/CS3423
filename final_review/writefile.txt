@@ -1,0 +1,13 @@
+this
+is
+data
+from
+the
+write
+filethis
+is
+data
+from
+the
+read
+file
